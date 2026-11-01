@@ -47,6 +47,24 @@ Category and risk are independent metadata. Application settings can be security
 
 Properties should declare `category` (application/artifact), sensitivity, risk/impact, editable/read-only status and required permission. Default artifact controls are curated; do not expose arbitrary AWS fields or raw environment editing. The framework must reject unknown classifications where category is required and prevent callers from changing a property's category/permission to bypass authorization.
 
+### Classification and coupled ownership — recommended procedure
+
+1. Identify the logical value being edited. Feature/business policy is Application configuration; resource operation, source/reader/access or infrastructure binding is Artifact configuration.
+2. Separate logical value from delivery/native mechanism where needed; link their controls without duplicating the authoritative field.
+3. Evaluate sensitivity, change impact, scope and permission independently. A UI section is never a permission grant.
+4. For coupled edits, produce one dependency-aware job requiring the union of the relevant capabilities, or explicitly approved service delegation. Preserve one owner for every field.
+
+| Ambiguous case | Application value | Artifact mechanism / boundary |
+|---|---|---|
+| Service URL | Approved logical business endpoint | Env key, source binding, reader identity and rollout |
+| Time limit | Business deadline/acceptance window | Lambda timeout and worker/queue timing |
+| Parallel work | Business per-customer limit | Lambda reservation, mapping concurrency and provider capacity |
+| Password rules | Product authentication policy | Native Cognito policy/client adapter and compatibility |
+| Retention | Consent/purpose-driven retention policy | S3 lifecycle, DynamoDB TTL and cleanup execution |
+| Diagnostic detail | Permitted application response content | Native log format/filtering and log retention |
+
+An application policy may require native resource changes; category describes the property, not the API used to apply it. The feature contract proposes category and semantics; provider adapters declare operating constraints; application composition explicitly accepts a supported mapping. Conflicts fail validation rather than letting a request reclassify the field. Contract/policy owners resolve disagreements through a versioned change; dashboard users cannot override metadata to gain rights.
+
 ## 3. Separate declarations, consumers, and bindings
 
 | Part | Declared by | Contains |
@@ -231,6 +249,8 @@ The application must have the components needed to read and change configured pr
 - Browser code does not receive worker AWS credentials.
 - Where a cloud API writes a whole resource rather than one property, the backend validates allowed keys and preserves unrelated values.
 - Existing external credentials/access must be checked where feasible; provisioning a policy document alone does not prove effective access through every external control.
+
+The [security and operational baseline](security-and-operations.md) specifies recommended secret custody/rotation, scope authorization, execution-time grant checks, panel/session defenses and independently protected audit evidence. IdP/vault backend choices remain open; existing artifact plans do not imply those framework services are implemented.
 
 Standalone and application panels call the same validated backend operations. Record who requested a change, target scope, nonsecret diff/reference, expected/applied revision, status and error. Secret edits accept replacements without returning old secret values.
 

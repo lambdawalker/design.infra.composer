@@ -6,7 +6,7 @@ Build a composition system in which independently maintained repositories declar
 
 This document records the initial discussion. **Agreed** means explicitly requested or accepted in that discussion. **Recommended** captures additional proposals to carry into design. **Open** means not decided. All Python examples here are pseudocode. An initial local composition/simulation milestone is implemented in [infra.composer.example](https://github.com/lambdawalker/infra.composer.example); it does not yet implement the configuration or cloud adapters in this design.
 
-Pulumi is the initial infrastructure execution model discussed. Python is the selected implementation language for the prototype; porting can be considered after the design is proven. Final package distribution remains open.
+Pulumi is the initial infrastructure execution model discussed. Python is the selected implementation language for the prototype; porting can be considered after the design is proven. Final package distribution remains open. The [composition protocol](composition-protocol.md) defines recommended terminology, registration and execution boundaries; the [validation matrix](validation-and-milestones.md) identifies what the prototype actually proves.
 
 ## 2. Independent features and contracts — agreed
 
@@ -63,12 +63,13 @@ Constructors and injection collect declarations and references. They do not crea
 
 Recommended internal stages:
 
+0. Inspect/resolve foundation requirements without mutation; represent missing foundation bindings symbolically. Collection and steps 1–5 must complete before a combined workflow executes bootstrap; see the [bootstrap protocol](composition-protocol.md#4-foundation-bootstrap).
 1. Collect declarations, offerings, requirements, and configuration needs.
 2. Apply explicit injections and resolve compatible providers.
 3. Expand permitted defaults and recursively resolve their requirements.
 4. Expand feature declarations into resources, bindings, and readiness operations.
 5. Validate contracts, scopes, ownership, and the resource prerequisite graph.
-6. Freeze a resolved plan and produce a Pulumi preview.
+6. Freeze the logical plan. If foundations are missing, validate/execute their separate authorized bootstrap plan after logical feature preflight, revalidate against actual outputs, then produce the feature Pulumi preview.
 7. Execute the validated deployment; verify readiness before activation.
 
 Repeated injection into the same input should fail unless replacement is explicit. Freeze the declaration graph before execution so late mutations cannot bypass validation.
@@ -220,6 +221,8 @@ Recommended vault behavior:
 For AWS SSO, remember profile/account/region selections and let supported AWS tooling manage sessions, renewal, and login. Do not collect the AWS login password as the normal authentication mechanism.
 
 Local memory is not the shared deployment record. CI and other developers need independently authorized secret sources and durable nonsecret manifests. Prefer workload identity/OIDC for CI where supported.
+
+The [security and operational baseline](security-and-operations.md) refines secret flow, rotation, authorization, panel protection and audit mechanisms. These are proposed controls, not properties of the local simulator.
 
 Open: initial vault backend, cross-machine sharing, recovery model, and headless unlock source. A lost passphrase has no recovery unless an explicit recovery mechanism was configured.
 

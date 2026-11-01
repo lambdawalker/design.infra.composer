@@ -201,9 +201,11 @@ Use local unit/infrastructure-mock tests first. Review requested cloud/IAM chang
 
 ## Artifact-specific follow-up
 
+- [Cognito custom-panel plan](cognito-configuration-panel.md): application-versus-native identity policy, curated pool/client settings, full-update preservation, token/MFA migration and scoped administration.
+
 - [Lambda expanded custom-panel plan](lambda-configuration-panel.md): memory/timeouts, concurrency, safe observability and application tuning beyond the initial URL/secret example; includes invocation-specific limits and reset/release coordination.
 
-- [API Gateway custom-panel plan](api-gateway-configuration-panel.md): useful post-deployment settings, fixed security boundaries, operator UI, native update adapter, ownership and verification. This is the next artifact after Lambda; other artifact-specific panels remain to be designed one at a time.
+- [API Gateway custom-panel plan](api-gateway-configuration-panel.md): useful post-deployment settings, fixed security boundaries, operator UI, native update adapter, ownership and verification. This follows Lambda; further artifact-specific panels are designed one at a time.
 
 ## 10. Provider references
 

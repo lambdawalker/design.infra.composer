@@ -12,6 +12,7 @@ Compose independently maintained backend features through declared contracts, de
 - [Attestra artifact inventory and configuration plan](docs/examples/attestra-configuration-plan.md): source-reviewed application of the configuration rules to Go/AWS authentication, storage, identity, messaging, and operations.
 - [Lambda custom-panel plan](docs/examples/lambda-configuration-panel.md): expanded post-deployment performance, capacity, observability and application-tuning controls.
 - [API Gateway custom-panel plan](docs/examples/api-gateway-configuration-panel.md): post-deployment throttling/CORS controls, scoped change jobs and infrastructure ownership.
+- [Cognito custom-panel plan](docs/examples/cognito-configuration-panel.md): application policy versus native identity settings, token/MFA compatibility and safe updates.
 - [Implementation roadmap](docs/roadmap.md): additional recommendations, acceptance criteria, unresolved choices, and suggested delivery order.
 
 The documents preserve the conclusions of the initial design discussion. **Agreed** identifies explicit requirements; **recommended** identifies proposed additions; **open** identifies decisions still needed. Inclusion of a recommendation does not mean its detailed implementation was approved.

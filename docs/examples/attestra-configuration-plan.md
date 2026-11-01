@@ -199,13 +199,11 @@ Verification should cover missing per-artifact bindings, denied read/write acces
 
 Use local unit/infrastructure-mock tests first. Review requested cloud/IAM changes separately before any future smoke deployment. This document makes no claim that these migrations or tests have already been implemented.
 
-## Artifact-specific follow-up
+## Artifact-specific configuration plans
 
-- [Cognito custom-panel plan](cognito-configuration-panel.md): application-versus-native identity policy, curated pool/client settings, full-update preservation, token/MFA migration and scoped administration.
+The [configuration-panel catalog](configuration-panel-catalog.md) links detailed plans for all 16 artifact types in this inventory. Lambda, API Gateway and Cognito are joined by DynamoDB, S3, SQS, EventBridge, CloudWatch, SES, Bedrock, ACM, DNS, CloudFront/OAC, IAM/OIDC, admin/index artifacts and deployment tooling/state.
 
-- [Lambda expanded custom-panel plan](lambda-configuration-panel.md): memory/timeouts, concurrency, safe observability and application tuning beyond the initial URL/secret example; includes invocation-specific limits and reset/release coordination.
-
-- [API Gateway custom-panel plan](api-gateway-configuration-panel.md): useful post-deployment settings, fixed security boundaries, operator UI, native update adapter, ownership and verification. This follows Lambda; further artifact-specific panels are designed one at a time.
+Each plan distinguishes **Application settings** from **Artifact settings**, identifies useful post-deployment controls and read-only/migration boundaries, and describes the custom-panel contract, scoped adapters/permissions, durable jobs, ownership, verification and recovery limits. Plans preserve the distinction between current source behavior and future capabilities. No panel or cloud change is implemented by these documents.
 
 ## 10. Provider references
 

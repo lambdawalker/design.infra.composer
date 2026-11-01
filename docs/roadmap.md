@@ -59,6 +59,8 @@ Do not store production secret values in this repository or use deployment-worke
 
 This sequence is a recommendation. Agree the detailed design of each implementation stage before building it.
 
+The [artifact configuration-panel catalog](examples/configuration-panel-catalog.md) now covers all 16 Attestra artifact types. Use its per-artifact delivery phases and cross-artifact dependencies when implementing stages 4 and 7; these are completed design plans, not implemented controls.
+
 ## 5. Acceptance criteria
 
 ### Composition and diagnostics
@@ -123,6 +125,9 @@ This sequence is a recommendation. Agree the detailed design of each implementat
 - Property category is independent of source/storage and risk; application editors cannot change reader bindings or grant themselves artifact permissions.
 - Later deployments preserve the declared live configuration authority and do not reset admin-owned values.
 - Policy versions and selection rationales are recorded; policy upgrades do not silently migrate existing configuration sources.
+
+- Native artifact changes satisfy their catalog plan: trusted target binding, scoped permissions, preservation of unrelated fields, read-back, durable partial-failure handling and explicit rollback limits.
+- Shared-control-plane, data destruction, identity/state migration and ordinary configuration writes have distinct capabilities and workflows.
 
 ### Control plane
 

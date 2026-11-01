@@ -195,6 +195,10 @@ Verification should cover missing per-artifact bindings, denied read/write acces
 
 Use local unit/infrastructure-mock tests first. Review requested cloud/IAM changes separately before any future smoke deployment. This document makes no claim that these migrations or tests have already been implemented.
 
+## Artifact-specific follow-up
+
+- [API Gateway custom-panel plan](api-gateway-configuration-panel.md): useful post-deployment settings, fixed security boundaries, operator UI, native update adapter, ownership and verification. This is the next artifact after Lambda; other artifact-specific panels remain to be designed one at a time.
+
 ## 10. Provider references
 
 - [Lambda environment variables, security recommendation and published-version behavior](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html)

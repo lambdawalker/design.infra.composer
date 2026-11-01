@@ -4,9 +4,9 @@
 
 Build a composition system in which independently maintained repositories declare backend features. An application repository connects them without feature repositories importing one another.
 
-This document records the initial discussion. **Agreed** means explicitly requested or accepted in that discussion. **Recommended** captures additional proposals to carry into design. **Open** means not decided. All Python examples are pseudocode; no framework is implemented.
+This document records the initial discussion. **Agreed** means explicitly requested or accepted in that discussion. **Recommended** captures additional proposals to carry into design. **Open** means not decided. All Python examples here are pseudocode. An initial local composition/simulation milestone is implemented in [infra.composer.example](https://github.com/lambdawalker/infra.composer.example); it does not yet implement the configuration or cloud adapters in this design.
 
-Pulumi is the initial infrastructure execution model discussed. Python illustrates the composition API; implementation language and packaging remain open.
+Pulumi is the initial infrastructure execution model discussed. Python is the selected implementation language for the prototype; porting can be considered after the design is proven. Final package distribution remains open.
 
 ## 2. Independent features and contracts — agreed
 
@@ -153,6 +153,8 @@ Each feature repository contains:
 
 Repo C uses the feature package without invoking the standalone entry point. Importing a package must not deploy anything.
 
+A feature may supply a standalone configuration panel. Inside an application, application-owned configuration is the default and the feature panel is not deployed. Both modes use the same exposed property contracts; application integration does not require mounting feature UI or adopting a common JavaScript framework. See [Configuration and administration](configuration-and-administration.md).
+
 Defaults are selected during composition when an input lacks a provider. A configured provider failing at runtime must not silently switch to a test substitute.
 
 Recommended defaults:
@@ -232,14 +234,18 @@ The hostname spellings are normalized from the discussion. These sites have depl
 
 Discovery returns only intended public metadata. Clients select an environment and compatible API major; never silently switch QA to production or v1 to v2. Endpoints may point directly to versioned integrations rather than proxying every call through the index.
 
+Configuration ownership is application-controlled by default. Features expose configurable properties and artifact consumers; the application binds sources, initial/default values, read/write operations, and permissions. Optional standalone feature panels are suppressed when the application takes ownership. A shared frontend module framework is not a requirement of this design.
+
+The agreed source-selection priority is security, provider guidance, then cost, after functional constraints are met. This supersedes a blanket environment-variable preference. [Configuration and administration](configuration-and-administration.md) defines these rules and AWS examples.
+
 Recommended control-plane behavior:
 
-- Feature-declared runtime settings generate typed controls with descriptions, defaults, bounds, and scope.
-- Classify settings as runtime, deployment-required, or secret.
+- The application decides the UI for feature-declared properties. Schema-generated controls are an option; mounting feature UI is not required.
+- Record sensitivity separately from application mechanism: cached runtime reads, artifact configuration rollouts, and managed-resource updates.
 - Validate runtime updates against affected active releases before publishing.
 - Store revisions, attribution, timestamps, and change history; support rollback where valid.
-- Pulumi owns configuration infrastructure and bootstrap defaults; the runtime configuration service owns live values afterward.
-- Define refresh/consistency behavior; a published value is not instantly applied to every warm process.
+- Pulumi owns infrastructure/bootstrap defaults; live configuration has one declared authoritative owner. The deployment adapter and configuration manager coordinate updates so a later deployment does not reset administrator changes.
+- Define refresh/consistency behavior; a published value is not instantly applied to every warm process. Environment-backed Lambda updates require new published versions and deliberate alias activation; AppConfig is a reader source, not a universal AWS resource controller.
 - Specify whether a setting affects all releases or a selected release.
 - Secret controls accept replacement values without returning existing values.
 - CLI/admin share validation and deployment logic.

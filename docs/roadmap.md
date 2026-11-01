@@ -14,7 +14,7 @@ This is a proposed implementation sequence, not a claim that implementation exis
 | Activation | Health/readiness checks and consistent routing publication | Do not advertise incomplete deployments |
 | Data evolution | Backward-compatible migrations, backfills, destructive-change gates | Concurrent old/new releases must work |
 | Admin security | Scoped roles, audit trail, bootstrap/recovery, workload identity | Manage the system without circular lockout |
-| Runtime configuration | Typed schemas, revisions, affected-release validation, refresh guarantees | Safe live changes |
+| Runtime configuration | Property/consumer contracts, source/read/write adapters, security-first selection, revisions, affected-release validation and refresh guarantees | Safe live changes |
 | Async work | Event schema versions, compatible consumers, idempotency, draining | Queues outlive deployments |
 | Client protocol | Shared SDK/spec for discovery, version, notices, cutoff, recovery | Consistent forced-update behavior |
 | Observability | Logs/metrics/traces by app/environment/feature/release; health and usage | Diagnose failures and inform retirement |
@@ -51,10 +51,10 @@ Do not store production secret values in this repository or use deployment-worke
 1. **Core contracts and declarations:** neutral contract schemas, source metadata, injection, resource ownership, environment context.
 2. **Resolver and diagnostics:** provider selection/defaults, resource graph expansion, cycle detection, structured errors, frozen plan.
 3. **Standalone reference features:** minimal authentication/email examples and controlled test providers; no accidental package-import deployment.
-4. **Pulumi execution adapter and memory:** preview/materialization, vault, readiness, idempotent jobs, durable state, headless operation.
+4. **Configuration contracts and execution adapters:** property inventories, artifact consumers, strict binding coverage, security/provider/cost policy, reader/writer plans, optional standalone panel ownership; then Pulumi preview/materialization, memory, vault, readiness, idempotent jobs, durable state, headless operation.
 5. **Release registry and data lifecycle:** immutable manifests/artifacts, coexistence, activation, migration/rollback rules, retirement.
 6. **Client discovery/update protocol:** policy schema, enforcement middleware, client adapters, deadline and offline behavior.
-7. **Admin/index control plane:** independent deployment/versioning, typed configuration UI, access scopes, audit trail, durable job UI.
+7. **Admin/index control plane:** independent deployment/versioning, application-owned property management, optional schema-driven UI, standalone panel suppression, access scopes, audit trail, durable job UI.
 8. **Operational hardening:** promotion pipeline, contract suites, recovery drills, drift handling, observability and retention policies.
 
 This sequence is a recommendation. Agree the detailed design of each implementation stage before building it.
@@ -106,6 +106,22 @@ This sequence is a recommendation. Agree the detailed design of each implementat
 - Web update verifies the new build without losing drafts or entering a reload loop.
 - Retirement refuses removal of required shared resources, live bindings, or undrained work.
 
+### Configuration sources and administration
+
+- Every exposed required property and artifact consumer has a complete compatible binding before mutation starts.
+- Missing mappings, unknown names, invalid/default types, unsupported readers, variable collisions, and conflicting writers produce actionable diagnostics.
+- Security requirements reject unsuitable sources before provider recommendation and cost rank remaining choices.
+- Sensitive credentials select an approved secret-aware source; no plaintext fallback or secret-value expansion into environment configuration occurs silently.
+- Storage, delivery, cache freshness, update/rotation, and permission requirements are explicit and validated per artifact.
+- Read and write identities are provisioned or bound separately with scoped access; browser code contains no AWS deployment credentials.
+- Environment-backed Lambda updates preserve unrelated variables, detect stale revisions, wait for completion, and publish/activate deliberately.
+- Exact release pins and shared resources are not silently changed by a configuration rollout.
+- AppConfig-fed application properties are distinguished from Cognito/RDS settings that require their own management adapters.
+- A feature can deploy its own panel standalone; application-managed configuration suppresses that panel by default.
+- No shared feature/frontend runtime is required merely to integrate configuration.
+- Later deployments preserve the declared live configuration authority and do not reset admin-owned values.
+- Policy versions and selection rationales are recorded; policy upgrades do not silently migrate existing configuration sources.
+
 ### Control plane
 
 - Admin/index can be deployed/versioned separately from feature backends.
@@ -119,7 +135,7 @@ This sequence is a recommendation. Agree the detailed design of each implementat
 
 | Decision | Current direction / constraint |
 |---|---|
-| Implementation language and packaging | Python examples; final language and distribution not selected |
+| Implementation language and packaging | Python selected for the prototype; final distribution/possible later port remain open |
 | Stack boundaries | One graph where practical; split by lifecycle/ownership when justified |
 | Contract distribution | Neutral shared package/schema; choose schema/type tooling |
 | Graph API | Explicit resource/input edges with source provenance; exact API open |
@@ -130,7 +146,11 @@ This sequence is a recommendation. Agree the detailed design of each implementat
 | Standalone providers | Decide real isolated AWS resources versus emulators/substitutes per contract |
 | Admin tenancy | Single admin across environments versus isolated control planes |
 | Admin authentication | Bootstrap/recovery independence required; identity provider and roles open |
-| Runtime config refresh | Define staleness bounds, caching, push/poll, and failure behavior |
+| Runtime config refresh | Define staleness bounds, caching, push/poll, rotation overlap and unavailable-source behavior |
+| Source policy | Security, provider guidance, then cost agreed; finalize versioned provider policy and workload-based cost estimation |
+| Property schema and adapters | Exact API/schema, artifact consumers, source support, change protocol and permissions |
+| Configuration change targeting | One selected release versus explicitly selected compatible releases; exact pins remain stable |
+| Admin implementation | Application chooses UI; optional feature panels are independent; no common feature JS framework mandated |
 | Version convention | Public API major synchronization; confirm independent internal feature versions |
 | Pre-1.0 compatibility | Define stability promises and migration expectations |
 | Client wire protocol | Header names, status code, policy schema, unknown-client handling |

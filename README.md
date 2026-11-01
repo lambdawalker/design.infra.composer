@@ -2,11 +2,12 @@
 
 Compose independently maintained backend features through declared contracts, dependency injection, and Pulumi deployments.
 
-**Status: architecture recorded; implementation has not started.** Code and configuration examples in these documents describe a proposed API, not an available SDK.
+**Status: architecture recorded; an initial Python local composer is implemented in [infra.composer.example](https://github.com/lambdawalker/infra.composer.example).** That prototype validates and simulates composition; configuration sources, panels, and cloud deployment described here are not implemented yet. Examples in these documents describe a proposed API unless stated otherwise.
 
 ## Design record
 
 - [Architecture](docs/architecture.md): feature composition, declarations, dependency validation, standalone providers, environments, credential memory, and control plane.
+- [Configuration and administration](docs/configuration-and-administration.md): property contracts, optional standalone panels, source selection, secure readers, and managed-resource updates.
 - [Releases and clients](docs/releases-and-clients.md): concurrent releases, compatibility, routing, client lockdown, and scheduled retirement.
 - [Implementation roadmap](docs/roadmap.md): additional recommendations, acceptance criteria, unresolved choices, and suggested delivery order.
 

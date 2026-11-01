@@ -176,6 +176,12 @@ Recommended implementation:
 - Track secrets/key rotation compatibility and old verification requirements.
 - Do not assume a retained Lambda alone preserves a usable old release.
 
+### Configuration revisions and retained Lambda versions
+
+Configuration changes follow the source/application mechanism in [Configuration and administration](configuration-and-administration.md). Published Lambda environment variables are immutable: changing them requires a new Lambda version, potentially using identical code, and deliberate alias/routing activation. Track code artifact identity, configuration revision, and qualified Lambda target separately. Do not silently repoint exact release pins or assume a configuration-only rollout changes the public API major.
+
+External configuration/secret references may remain mutable even when code is pinned. Record their revision/stage/refresh policy and validate changes against affected releases. Whether a change targets one release or all compatible active releases remains an explicit open policy choice.
+
 ## 10. Retirement — recommended
 
 An explicit retirement plan checks:

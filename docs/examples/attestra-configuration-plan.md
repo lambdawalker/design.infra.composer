@@ -62,6 +62,10 @@ Separate four kinds of value:
 
 Business records (proofs, challenge transactions, captures, grants, leases, reset state and audit history) remain in transactional storage. They must not be migrated wholesale into AppConfig.
 
+### Dashboard classification
+
+The admin dashboard separates **Application settings** (feature behavior and logical property values) from **Artifact settings** (execution/infrastructure and source bindings). Store choice does not decide the category: an env-backed feature value is still application configuration. Separate server-side permissions apply; security-sensitive application settings remain restricted. See the [two-section dashboard rules](../configuration-and-administration.md).
+
 ## 4. Per-artifact configuration plan
 
 | Artifact type | Exposed configuration candidates | Read / application method | Change owner and access |
@@ -196,6 +200,8 @@ Verification should cover missing per-artifact bindings, denied read/write acces
 Use local unit/infrastructure-mock tests first. Review requested cloud/IAM changes separately before any future smoke deployment. This document makes no claim that these migrations or tests have already been implemented.
 
 ## Artifact-specific follow-up
+
+- [Lambda expanded custom-panel plan](lambda-configuration-panel.md): memory/timeouts, concurrency, safe observability and application tuning beyond the initial URL/secret example; includes invocation-specific limits and reset/release coordination.
 
 - [API Gateway custom-panel plan](api-gateway-configuration-panel.md): useful post-deployment settings, fixed security boundaries, operator UI, native update adapter, ownership and verification. This is the next artifact after Lambda; other artifact-specific panels remain to be designed one at a time.
 

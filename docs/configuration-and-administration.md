@@ -24,6 +24,29 @@ The application may build custom controls or generate forms from schemas. Config
 
 The app-owned panel and index retain their independently deployed/versioned lifecycle from the architecture. Configuration ownership does not require deploying the full feature again to change every setting; the selected update mechanism determines the operation.
 
+### Dashboard sections — agreed
+
+The admin dashboard has two clearly separated top-level sections:
+
+| Section | Meaning | Examples |
+|---|---|---|
+| **Application settings** | What the application/feature does | Onboarding modes, permitted feature behavior, disclosure messages, approved business-service URL, application password rules |
+| **Artifact settings** | How deployed resources execute, connect, and are operated | Lambda memory/timeout/concurrency, API Gateway throttles/CORS, database/storage settings, reader-source bindings, IAM and deployment controls |
+
+Application settings are the ordinary feature-management area. Artifact settings are the infrastructure/operations area and must clearly identify low-level changes, affected resources and potential service disruption.
+
+Classification is based on meaning, not storage. An application setting remains an application setting if delivered through an environment variable; choosing its reader source, execution identity or deployment mechanism is artifact configuration.
+
+The value and mechanism may therefore have separate controls: the application section edits an approved logical property value; the artifact section manages how that property is delivered. Each shows a link to the other when useful without creating a second independent writer.
+
+Use separate permissions and backend authorization, for example `application.settings.write` and `artifact.settings.write`, scoped by environment/resource and optionally property. An application editor does not automatically become an infrastructure operator. Hiding a tab is not authorization.
+
+Both sections show the target application/environment or shared scope, current revision, change history and application status. Artifact edits additionally show the physical/logical resource, change scope, coupled operations and rollout/recovery impact.
+
+Category and risk are independent metadata. Application settings can be security-sensitive: password rules, diagnostic response mode, proof lifetime, abuse controls and consent/retention need additional restrictions even though they affect application behavior. Conversely, artifact settings are not all equally dangerous. Validate permissions and review requirements for the specific change rather than assuming one section is inherently safe.
+
+Properties should declare `category` (application/artifact), sensitivity, risk/impact, editable/read-only status and required permission. Default artifact controls are curated; do not expose arbitrary AWS fields or raw environment editing. The framework must reject unknown classifications where category is required and prevent callers from changing a property's category/permission to bypass authorization.
+
 ## 3. Separate declarations, consumers, and bindings
 
 | Part | Declared by | Contains |

@@ -119,6 +119,8 @@ This sequence is a recommendation. Agree the detailed design of each implementat
 - AppConfig-fed application properties are distinguished from Cognito/RDS settings that require their own management adapters.
 - A feature can deploy its own panel standalone; application-managed configuration suppresses that panel by default.
 - No shared feature/frontend runtime is required merely to integrate configuration.
+- The dashboard separates Application settings from Artifact settings; permissions and risk are enforced in the backend, not just by tab visibility.
+- Property category is independent of source/storage and risk; application editors cannot change reader bindings or grant themselves artifact permissions.
 - Later deployments preserve the declared live configuration authority and do not reset admin-owned values.
 - Policy versions and selection rationales are recorded; policy upgrades do not silently migrate existing configuration sources.
 

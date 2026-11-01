@@ -10,6 +10,7 @@ Compose independently maintained backend features through declared contracts, de
 - [Configuration and administration](docs/configuration-and-administration.md): property contracts, optional standalone panels, source selection, secure readers, and managed-resource updates.
 - [Releases and clients](docs/releases-and-clients.md): concurrent releases, compatibility, routing, client lockdown, and scheduled retirement.
 - [Attestra artifact inventory and configuration plan](docs/examples/attestra-configuration-plan.md): source-reviewed application of the configuration rules to Go/AWS authentication, storage, identity, messaging, and operations.
+- [Lambda custom-panel plan](docs/examples/lambda-configuration-panel.md): expanded post-deployment performance, capacity, observability and application-tuning controls.
 - [API Gateway custom-panel plan](docs/examples/api-gateway-configuration-panel.md): post-deployment throttling/CORS controls, scoped change jobs and infrastructure ownership.
 - [Implementation roadmap](docs/roadmap.md): additional recommendations, acceptance criteria, unresolved choices, and suggested delivery order.
 

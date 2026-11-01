@@ -238,6 +238,8 @@ Configuration ownership is application-controlled by default. Features expose co
 
 The agreed source-selection priority is security, provider guidance, then cost, after functional constraints are met. This supersedes a blanket environment-variable preference. [Configuration and administration](configuration-and-administration.md) defines these rules and AWS examples.
 
+The dashboard has separate **Application settings** (feature/business behavior) and **Artifact settings** (infrastructure, execution and source bindings). Application editors and infrastructure operators have separate backend-enforced permissions. Category does not imply safety: security-sensitive application properties still require explicit safeguards. See the [dashboard classification rules](configuration-and-administration.md).
+
 Recommended control-plane behavior:
 
 - The application decides the UI for feature-declared properties. Schema-generated controls are an option; mounting feature UI is not required.

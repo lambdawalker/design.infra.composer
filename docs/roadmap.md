@@ -4,6 +4,8 @@
 
 This is a proposed implementation sequence, not a claim that implementation exists or that every technical choice is settled. It includes the additional ideas suggested during the design discussion.
 
+The [validation and milestones](validation-and-milestones.md) document maps implemented local behavior to pinned tests and defines the next bounded cloud milestone. The [composition protocol](composition-protocol.md) and [security baseline](security-and-operations.md) refine proposed mechanisms. Keep recommendations distinct from implementation evidence; record accepted changes in the [decision log](decisions.md).
+
 ## 1. Priority additions
 
 | Area | Required design work | Why |
@@ -24,7 +26,7 @@ This is a proposed implementation sequence, not a claim that implementation exis
 
 ## 2. Deployment execution recommendations
 
-Use one engine from CLI, CI, and admin. Model plan, preview, deploy, verify, activate, deprecate, and retire as distinct operations with durable status.
+Use one shared planning/orchestration engine from CLI, CI, and admin. Pulumi remains the current cloud executor behind the logical plan/adapter boundary; this does not require multiple execution engines. Model plan, preview, deploy, verify, activate, deprecate, and retire as distinct operations with durable status.
 
 Before mutation, display target account, region, environment, stack/backend, selected releases, providers/defaults, and intended changes. Never log credential values.
 

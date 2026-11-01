@@ -11,9 +11,13 @@ Compose independently maintained backend features through declared contracts, de
 - [Releases and clients](docs/releases-and-clients.md): concurrent releases, compatibility, routing, client lockdown, and scheduled retirement.
 - [Attestra artifact inventory and configuration plan](docs/examples/attestra-configuration-plan.md): source-reviewed application of the configuration rules to Go/AWS authentication, storage, identity, messaging, and operations.
 - [Artifact configuration-panel catalog](docs/examples/configuration-panel-catalog.md): all 16 artifact types, including application/artifact settings, custom-panel adapters, permissions, change jobs, ownership and recovery.
+- [Composition protocol](docs/composition-protocol.md): registration, deterministic matching, graph validation, foundation bootstrap and readiness contracts.
+- [Security and operations](docs/security-and-operations.md): key custody, secret flow, authorization, panel defenses and audit evidence.
+- [Validation and milestones](docs/validation-and-milestones.md): pinned prototype evidence, test layers, focused delivery scope and external-review assessment.
+- [Decision record](docs/decisions.md): agreed requirements, recommended refinements and superseded directions.
 - [Implementation roadmap](docs/roadmap.md): additional recommendations, acceptance criteria, unresolved choices, and suggested delivery order.
 
-The documents preserve the conclusions of the initial design discussion. **Agreed** identifies explicit requirements; **recommended** identifies proposed additions; **open** identifies decisions still needed. Inclusion of a recommendation does not mean its detailed implementation was approved.
+The documents preserve the conclusions of the initial design discussion. **Agreed** identifies explicit requirements; **recommended** identifies proposed additions; **open** identifies decisions still needed. Inclusion of a recommendation does not mean its detailed implementation was approved. Implementation and verification claims additionally require pinned evidence; see the validation matrix.
 
 ## Central idea
 

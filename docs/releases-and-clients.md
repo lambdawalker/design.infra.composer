@@ -63,6 +63,32 @@ Each active feature release has its own resolved provider bindings. Two authenti
 
 Recommended: freeze release manifests with source commit, package versions, artifact hashes, contract requirements/resolved bindings, infrastructure schema, migration identifiers, runtime configuration schema, and client/API compatibility. Record environment-specific deployments separately. Promote identical artifacts across environments; generated AWS version numbers can differ.
 
+### Capability advertisement and routing — proposed contract
+
+A future request/discovery resolver can accept a bounded advertisement such as:
+
+```json
+{
+  "schema_version": 1,
+  "application": "example",
+  "environment": "prod",
+  "platform": "android",
+  "client_build": 120,
+  "api_major": 1,
+  "route": {"mode": "channel", "name": "api-v1"},
+  "requires_backend_capabilities": ["identity.passkey.create/v1"],
+  "supports_protocol_features": ["update-policy/v1"]
+}
+```
+
+This is a proposed wire shape; endpoint/header names and its implementation remain open. Keep backend capabilities required by the client distinct from protocol features the client can handle. A feature package version is not an application API major or platform build number.
+
+The server resolves only the explicit environment and exact pin or developer-approved channel, checks supported advertisement schema/build policy, and verifies the selected release's declared API/capabilities and any supported minimum-version constraint. All requirements must be satisfied. Channel policy selects among approved healthy compatible targets; it does not automatically select the numerically highest release. An incompatible pin fails clearly rather than falling back to a channel or another environment/major.
+
+Return selected release/endpoint, supported schema and policy revision, or a structured incompatibility/update response with safe recovery information. Define missing/unknown advertisements through an explicit legacy-support policy; do not infer compatibility from absence. Bound capability count/string size and keep responses within an intentional public metadata projection.
+
+Treat all advertised values as untrusted compatibility hints. A client can lie about its version or capabilities. Backend authentication/authorization and operation/schema validation remain mandatory. Signing the advertisement alone does not establish a trustworthy client; stronger attestation is a separate requirement only where justified. Normal API requests enforce their selected route and effective update policy even after discovery succeeds.
+
 ## 5. Lifecycle and activation — recommended
 
 Track deployment and activation separately:

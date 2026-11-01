@@ -9,6 +9,7 @@ Compose independently maintained backend features through declared contracts, de
 - [Architecture](docs/architecture.md): feature composition, declarations, dependency validation, standalone providers, environments, credential memory, and control plane.
 - [Configuration and administration](docs/configuration-and-administration.md): property contracts, optional standalone panels, source selection, secure readers, and managed-resource updates.
 - [Releases and clients](docs/releases-and-clients.md): concurrent releases, compatibility, routing, client lockdown, and scheduled retirement.
+- [Attestra artifact inventory and configuration plan](docs/examples/attestra-configuration-plan.md): source-reviewed application of the configuration rules to Go/AWS authentication, storage, identity, messaging, and operations.
 - [Implementation roadmap](docs/roadmap.md): additional recommendations, acceptance criteria, unresolved choices, and suggested delivery order.
 
 The documents preserve the conclusions of the initial design discussion. **Agreed** identifies explicit requirements; **recommended** identifies proposed additions; **open** identifies decisions still needed. Inclusion of a recommendation does not mean its detailed implementation was approved.

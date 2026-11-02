@@ -38,3 +38,7 @@ Each feature also has a standalone deployment entry point with permitted default
 The design covers feature infrastructure, dev/QA/prod/custom environments, encrypted deployment memory, retained backend releases, client discovery/update policies, and independently deployed admin/index sites.
 
 This repository stores design, contracts, schemas, and eventually code. Credentials, runtime configuration values, live deployment records, and Pulumi state belong in their designated protected stores, not in source control.
+
+## Resource ownership
+
+Apply the [resource ownership standard](docs/resource-ownership.md) to tags, mutable descriptions and metadata-only inventory, including shared resources and provider limitations. Existing resource identifiers are preserved.

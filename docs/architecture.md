@@ -303,3 +303,7 @@ These describe underlying mechanisms, not an existing infra.composer implementat
 - [Pulumi stack organization](https://www.pulumi.com/docs/iac/guides/basics/organizing-projects-stacks/)
 - [Pulumi secret handling](https://www.pulumi.com/docs/iac/concepts/secrets/)
 - [AWS CLI SSO configuration](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html)
+
+## Resource ownership
+
+Apply the [resource ownership standard](resource-ownership.md) to tags, mutable descriptions and metadata-only inventory, including shared resources and provider limitations. Existing resource identifiers are preserved.

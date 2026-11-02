@@ -4,6 +4,8 @@
 
 This is a proposed implementation sequence, not a claim that implementation exists or that every technical choice is settled. It includes the additional ideas suggested during the design discussion.
 
+The [teardown/nuke lifecycle](teardown-and-nuke.md) now has a Go CLI/library reference and an Attestra application integration. Its documented implementation evidence is separate from the broader proposed hosted execution, administration and coordination stages below.
+
 ## 1. Priority additions
 
 | Area | Required design work | Why |
@@ -21,6 +23,7 @@ This is a proposed implementation sequence, not a claim that implementation exis
 | Disaster recovery | State/metadata/artifact/secret backup, restore procedures, recovery drills | Local vault loss must not erase system knowledge |
 | CI/CD | Same engine as CLI/admin, noninteractive config, scoped identities | Reproducible automated operations |
 | Drift | Compare desired/observed state and reconcile intentionally | Avoid overwriting emergency changes blindly |
+| All-environment teardown | Environment-first/shared-last nuke, verified inventories, recovery gate and read-only full/fast checks | Safe removal with clear residual-artifact reporting; Go reference available |
 
 ## 2. Deployment execution recommendations
 
@@ -138,11 +141,21 @@ The [artifact configuration-panel catalog](examples/configuration-panel-catalog.
 - Closing the admin browser does not terminate a submitted deployment.
 - Recovery remains possible when the managed authentication feature is unavailable.
 
+### Teardown and nuke
+
+- Nuke requires explicit application/account scope confirmation and attempts every adopted environment before shared admin/index.
+- Persist complete inventories before destruction; retain retry evidence when stacks or environment settings disappear.
+- Confirmed absence is success; failed, remaining and unverifiable artifacts preserve recovery state.
+- Verify all recovery candidates before deleting state buckets, and verify every bucket absent before KMS scheduling.
+- Full/fast checks never delete; fast checks inspect only the latest `REMAINS` entries and preserve skipped evidence.
+- Pending secret deletion and retained backups cannot be mislabeled as absent.
+- Clearly distinguish implemented CLI/local locks from future hosted workers and distributed exclusion. See the [detailed acceptance criteria](teardown-and-nuke.md#7-acceptance-criteria).
+
 ## 6. Open decisions
 
 | Decision | Current direction / constraint |
 |---|---|
-| Implementation language and packaging | Python selected for the prototype; final distribution/possible later port remain open |
+| Implementation language and packaging | Python prototype and Go reference available; long-term distribution/versioning policy remains open |
 | Stack boundaries | One graph where practical; split by lifecycle/ownership when justified |
 | Contract distribution | Neutral shared package/schema; choose schema/type tooling |
 | Graph API | Explicit resource/input edges with source provenance; exact API open |

@@ -6,7 +6,7 @@ Build a composition system in which independently maintained repositories declar
 
 This document records the initial discussion. **Agreed** means explicitly requested or accepted in that discussion. **Recommended** captures additional proposals to carry into design. **Open** means not decided. All Python examples here are pseudocode. An initial local composition/simulation milestone is implemented in [infra.composer.example](https://github.com/lambdawalker/infra.composer.example); it does not yet implement the configuration or cloud adapters in this design.
 
-Pulumi is the initial infrastructure execution model discussed. Python is the selected implementation language for the prototype; porting can be considered after the design is proven. Final package distribution remains open.
+Pulumi is the initial infrastructure execution model discussed. Python was selected for the initial local prototype. A subsequent [Go reference](https://github.com/lambdawalker/go.infra.composer) implements core composition, a native Pulumi adapter and the [teardown/nuke lifecycle](teardown-and-nuke.md). This does not imply that every hosted configuration/control-plane proposal below is implemented. Final distribution policy remains open.
 
 ## 2. Independent features and contracts — agreed
 
@@ -282,6 +282,8 @@ Define deletion/retention policy and ownership of connections separately. Retiri
 Adopt one authority per field rather than letting Git, Pulumi, and admin overwrite one another. Use a generation/revision with optimistic concurrency for administrative edits. Publish a consistent discovery snapshot only after target readiness; partial failure must not advertise an unavailable release.
 
 Pulumi locking protects a stack. Cross-stack deployment, activation, and retirement require application-level coordination and durable checkpoints. Retry safe steps idempotently and distinguish desired state from observed state.
+
+All-environment destruction is a separate, explicitly authorized lifecycle. Attempt environment targets before shared admin/index; preserve inventories across missing stacks; verify outcomes independently; and gate recovery-state/key deletion on successful primary cleanup. Full and remaining-only checks are non-destructive. See [teardown and nuke](teardown-and-nuke.md) for the agreed rules, Go implementation evidence, commands and coordination limits. Feature modules remain independent of application-wide teardown ownership.
 
 ## 12. Approaches considered
 

@@ -20,13 +20,14 @@ Canonical keys cannot be overridden by a feature or by unrelated provider defaul
 
 ## Descriptions and physical names
 
-When the service and provider support a mutable description/comment, prepend:
+When the service and provider support a mutable description/comment, use exactly:
 
 ```text
-[dev]/[attestrabond.com] attestra/email-verification - Start email verification
+index.attestrabond.com SHARED | go.attestra.aws
+dev.attestrabond.com DEV | go.apexfission.aws.auth
 ```
 
-Keep the purpose text. Repeated application must not duplicate the generated prefix. Use an ASCII separator: IAM role descriptions permit only ASCII/Latin-1, so a Unicode em dash is not portable. Validate service length limits and fail rather than silently truncate. Do not modify immutable descriptions, notably IAM managed-policy descriptions, merely to label a resource.
+The fields are the configured ownership domain, uppercase environment, and the repository of the feature/application that required the resource. The owner is independent of the existing canonical feature tag. Omit the resource name and purpose. Replace previous generated descriptions rather than appending them. Use ASCII separators for IAM compatibility. Validate service length limits and fail rather than silently truncate. Do not modify immutable descriptions, notably IAM managed-policy descriptions, merely to label a resource.
 
 Existing physical names, ARNs, Pulumi names/parents and dependencies must remain unchanged. A separate migration is required before changing identifiers that might replace resources.
 

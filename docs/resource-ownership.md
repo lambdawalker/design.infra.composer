@@ -16,7 +16,7 @@ Every deployment supplies nonsecret application, environment, domain and deploym
 
 The application chooses an explicit hostname for domain; do not infer a registrable root domain by removing labels. It may use a common base domain or the deployed hostname. The identifier is not a URL and contains no credentials, paths or query parameters. Deployment identifiers remain stable across code releases; versions and revisions belong in deployment records. Tag values must contain no credentials or personal data.
 
-Canonical keys cannot be overridden by a feature or by unrelated provider defaults. Preserve unrelated existing/operator tags. Conflicting ownership requires an explicit adoption/migration, not silent reassignment. Tags identify ownership but do not themselves grant permissions or authorize destruction.
+Canonical keys cannot be overridden by a feature or by unrelated provider defaults. Preserve unrelated tags supplied by the resource declaration. Before applying labels to existing IaC resources, reconcile out-of-band operator tags into the desired configuration or configure AWS provider ignoreTags for agreed operator-owned keys/prefixes; the generic native transformation does not fetch them from AWS. CLI bootstrap labeling reads and merges actual existing tags. Conflicting ownership requires an explicit adoption/migration, not silent reassignment. Tags identify ownership but do not themselves grant permissions or authorize destruction.
 
 ## Descriptions and physical names
 

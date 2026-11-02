@@ -2,13 +2,14 @@
 
 Compose independently maintained backend features through declared contracts, dependency injection, and Pulumi deployments.
 
-**Status: architecture recorded; an initial Python local composer is implemented in [infra.composer.example](https://github.com/lambdawalker/infra.composer.example).** That prototype validates and simulates composition; configuration sources, panels, and cloud deployment described here are not implemented yet. Examples in these documents describe a proposed API unless stated otherwise.
+**Status: architecture recorded, with reference implementations.** The initial [Python local prototype](https://github.com/lambdawalker/infra.composer.example) validates and simulates composition. The [Go implementation](https://github.com/lambdawalker/go.infra.composer) also provides native Pulumi integration and the [report-backed teardown/nuke lifecycle](docs/teardown-and-nuke.md). Broader configuration delivery, hosted panels and deployment coordination described here remain proposed unless a section identifies implementation evidence. Examples describe a proposed API unless stated otherwise.
 
 ## Design record
 
 - [Architecture](docs/architecture.md): feature composition, declarations, dependency validation, standalone providers, environments, credential memory, and control plane.
 - [Configuration and administration](docs/configuration-and-administration.md): property contracts, optional standalone panels, source selection, secure readers, and managed-resource updates.
 - [Releases and clients](docs/releases-and-clients.md): concurrent releases, compatibility, routing, client lockdown, and scheduled retirement.
+- [Teardown and nuke](docs/teardown-and-nuke.md): all-environment destruction, shared admin/index ordering, persistent reporting, recovery-state/key safeguards, and full/remaining-only checks.
 - [Attestra artifact inventory and configuration plan](docs/examples/attestra-configuration-plan.md): source-reviewed application of the configuration rules to Go/AWS authentication, storage, identity, messaging, and operations.
 - [Artifact configuration-panel catalog](docs/examples/configuration-panel-catalog.md): all 16 artifact types, including application/artifact settings, custom-panel adapters, permissions, change jobs, ownership and recovery.
 - [Implementation roadmap](docs/roadmap.md): additional recommendations, acceptance criteria, unresolved choices, and suggested delivery order.

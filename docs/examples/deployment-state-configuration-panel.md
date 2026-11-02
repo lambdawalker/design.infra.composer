@@ -25,6 +25,8 @@ Proposal only. This plan does not unlock/export a vault, change GitHub secrets, 
 
 Do not make teardown, reset, state import, force unlock, production promotion, credential export or backend replacement side effects of a settings save. They are separately authorized operations with exact targets and audit.
 
+The [all-environment teardown/nuke lifecycle](../teardown-and-nuke.md) defines the separate destructive operation and its non-destructive full/fast checks. Its Go CLI/application reference is implemented independently of this proposed panel. A future panel must preserve environment-before-shared ordering, private retry inventory and the verified recovery gate, rather than treating nuke as a settings toggle or claiming the current CLI supplies hosted job authorization/coordination.
+
 The application/admin panel cannot read a developer's local vault merely because it controls the deployed application. Local memory settings require a local CLI/agent interface or a separately designed authenticated operator channel. Hosted workers use their own scoped credentials/secret references.
 
 ## 3. Custom-panel flow

@@ -289,3 +289,7 @@ The local prototype remains unchanged by this documentation update. Future imple
 - [AppConfig non-native sources](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-creating-configuration-profile-other-data-sources.html)
 - [Cognito UpdateUserPool](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UpdateUserPool.html)
 - [RDS ModifyDBInstance](https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ModifyDBInstance.html)
+
+## Resource ownership
+
+Apply the [resource ownership standard](resource-ownership.md) to tags, mutable descriptions and metadata-only inventory, including shared resources and provider limitations. Existing resource identifiers are preserved.

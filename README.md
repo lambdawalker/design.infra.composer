@@ -2,7 +2,9 @@
 
 Compose independently maintained backend features through declared contracts, dependency injection, and Pulumi deployments.
 
-**Status: architecture recorded, with reference implementations.** The initial [Python local prototype](https://github.com/lambdawalker/infra.composer.example) validates and simulates composition. The [Go implementation](https://github.com/lambdawalker/go.infra.composer) also provides native Pulumi integration and the [report-backed teardown/nuke lifecycle](docs/teardown-and-nuke.md). Broader configuration delivery, hosted panels and deployment coordination described here remain proposed unless a section identifies implementation evidence. Examples describe a proposed API unless stated otherwise.
+**Implementing Composer in another language?** Start with the [portable implementation contract](docs/implementation-contract.md), then run the examples in the [conformance kit](conformance/README.md). The contract covers the planner, execution boundary, configuration, approvals, ownership, inventory and teardown. The [artifact report protocol](docs/artifact-reports.md) defines how independently produced reports can be exchanged.
+
+The [Python prototype](https://github.com/lambdawalker/infra.composer.example) exercises local composition. The [Go reference](https://github.com/lambdawalker/go.infra.composer/tree/ad4cfd268616a1ef94b324fe88266f845294f57a) supplies the implementation baseline. Hosted configuration writers, release orchestration and client rollout policies belong to the broader product design.
 
 ## Design record
 

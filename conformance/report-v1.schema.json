@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Infra Composer artifact report v1",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    },
+    "cacheLoaded": {
+      "type": "boolean"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifacts": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "scope",
+    "metadata",
+    "cacheLoaded",
+    "artifacts"
+  ],
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "properties": {
+        "application": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "backend": {
+          "type": "string"
+        },
+        "stack": {
+          "type": "string"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "revision": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "outcome": {
+          "type": "string"
+        },
+        "dirty": {
+          "type": "boolean"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finishedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "startedAt",
+        "finishedAt"
+      ]
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "unknown",
+            "recorded",
+            "present",
+            "absent"
+          ]
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "enum": [
+            "unchecked",
+            "check_failed",
+            "invalid_evidence",
+            "not_found",
+            "identity_changed"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "observedAt"
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "const": "pulumi-state"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "values": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "source",
+        "observedAt",
+        "values"
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "feature": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "string"
+        },
+        "plannedAction": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "observation": {
+          "$ref": "#/$defs/observation"
+        },
+        "configuration": {
+          "$ref": "#/$defs/configuration"
+        }
+      },
+      "required": [
+        "key",
+        "observation"
+      ]
+    }
+  }
+}

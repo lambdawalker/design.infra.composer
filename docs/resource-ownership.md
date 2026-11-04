@@ -20,13 +20,28 @@ Canonical keys cannot be overridden by a feature or by unrelated provider defaul
 
 ## Descriptions and physical names
 
-When the service and provider support a mutable description/comment, prepend:
+For an allowlisted mutable description or comment, set the complete value to `<domain> <UPPERCASE environment> | <owner>`. Owner is the creating repository identifier supplied by the host or feature. If omitted, use the feature identifier. An owner override changes the description independently of the canonical feature tag.
 
 ```text
-[dev]/[attestrabond.com] attestra/email-verification - Start email verification
+index.attestrabond.com SHARED | go.attestra.aws
+dev.api.attestrabond.com DEV | go.apexfission.aws.auth
 ```
 
-Keep the purpose text. Repeated application must not duplicate the generated prefix. Use an ASCII separator: IAM role descriptions permit only ASCII/Latin-1, so a Unicode em dash is not portable. Validate service length limits and fail rather than silently truncate. Do not modify immutable descriptions, notably IAM managed-policy descriptions, merely to label a resource.
+Rendering replaces an earlier generated description and omits free-form purpose text. Reapplying the transformation yields the same value. Check the service length limit before registration. Leave immutable descriptions such as IAM managed-policy descriptions alone.
+
+The reference AWS adapter uses the following mutable-field allowlist. Limits count Unicode code points. A port adding a resource must verify the provider schema and update behavior before extending the list.
+
+| AWS resource | Field | Limit |
+|---|---|---:|
+| Lambda function | description | 256 |
+| HTTP API or stage | description | 1024 |
+| IAM role | description | 1000 |
+| Secrets Manager secret | description | 2048 |
+| KMS key | description | 8192 |
+| EventBridge rule | description | 512 |
+| CloudWatch metric alarm | alarmDescription | 1024 |
+| CloudFront distribution | comment | 128 |
+| Route 53 hosted zone | comment | 256 |
 
 Existing physical names, ARNs, Pulumi names/parents and dependencies must remain unchanged. A separate migration is required before changing identifiers that might replace resources.
 

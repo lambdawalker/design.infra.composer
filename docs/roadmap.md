@@ -6,6 +6,8 @@ This is a proposed implementation sequence, not a claim that implementation exis
 
 The [teardown/nuke lifecycle](teardown-and-nuke.md) now has a Go CLI/library reference and an Attestra application integration. Its documented implementation evidence is separate from the broader proposed hosted execution, administration and coordination stages below.
 
+For current portable behavior and acceptance cases, use the [implementation contract](implementation-contract.md) and [conformance kit](../conformance/README.md). The stages below retain the broader product goals.
+
 ## 1. Priority additions
 
 | Area | Required design work | Why |

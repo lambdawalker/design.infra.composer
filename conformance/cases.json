@@ -1,0 +1,850 @@
+[
+  {
+    "id": "integrated-qa",
+    "input": {
+      "op": "plan",
+      "scenario": "integrated",
+      "environment": "qa"
+    },
+    "expected": {
+      "order": [
+        "authentication.pool",
+        "emailvalidation.validator"
+      ],
+      "bindings": [
+        {
+          "consumer": "authentication.email-validator",
+          "provider": "emailvalidation.validator",
+          "contract": "example.email-validator/v1",
+          "origin": "automatic"
+        },
+        {
+          "consumer": "emailvalidation.users",
+          "provider": "authentication.users",
+          "contract": "example.user-pool/v1",
+          "origin": "automatic"
+        }
+      ],
+      "runtime_dependencies": [
+        {
+          "consumer": "authentication.email-validator",
+          "provider": "emailvalidation.validator",
+          "reason": "validate email when users register",
+          "source": "examples/authentication"
+        }
+      ]
+    }
+  },
+  {
+    "id": "auth-dev",
+    "input": {
+      "op": "plan",
+      "scenario": "auth",
+      "environment": "dev"
+    },
+    "expected": {
+      "order": [
+        "auth-test-validator.validator",
+        "authentication.pool"
+      ],
+      "bindings": [
+        {
+          "consumer": "authentication.email-validator",
+          "provider": "auth-test-validator.validator",
+          "contract": "example.email-validator/v1",
+          "origin": "default"
+        }
+      ],
+      "runtime_dependencies": [
+        {
+          "consumer": "authentication.email-validator",
+          "provider": "auth-test-validator.validator",
+          "reason": "validate email when users register",
+          "source": "examples/authentication"
+        }
+      ]
+    }
+  },
+  {
+    "id": "auth-prod",
+    "input": {
+      "op": "plan",
+      "scenario": "auth",
+      "environment": "prod"
+    },
+    "expected": {
+      "deploymentStarted": false,
+      "codes": [
+        "IC_TEST_PROVIDER"
+      ]
+    }
+  },
+  {
+    "id": "self-dev",
+    "input": {
+      "op": "plan",
+      "scenario": "self",
+      "environment": "dev"
+    },
+    "expected": {
+      "deploymentStarted": false,
+      "codes": [
+        "IC_DEPENDENCY_CYCLE"
+      ]
+    }
+  },
+  {
+    "id": "mutual-dev",
+    "input": {
+      "op": "plan",
+      "scenario": "mutual",
+      "environment": "dev"
+    },
+    "expected": {
+      "deploymentStarted": false,
+      "codes": [
+        "IC_DEPENDENCY_CYCLE"
+      ]
+    }
+  },
+  {
+    "id": "missing-dev",
+    "input": {
+      "op": "plan",
+      "scenario": "missing",
+      "environment": "dev"
+    },
+    "expected": {
+      "deploymentStarted": false,
+      "codes": [
+        "IC_MISSING_PROVIDER"
+      ]
+    }
+  },
+  {
+    "id": "ambiguous-dev",
+    "input": {
+      "op": "plan",
+      "scenario": "ambiguous",
+      "environment": "dev"
+    },
+    "expected": {
+      "deploymentStarted": false,
+      "codes": [
+        "IC_AMBIGUOUS_PROVIDER"
+      ]
+    }
+  },
+  {
+    "id": "routine-ownDeadline",
+    "input": {
+      "op": "approve",
+      "mode": "timed",
+      "kind": "routine",
+      "event": "ownDeadline"
+    },
+    "expected": "approved"
+  },
+  {
+    "id": "routine-inputFailure",
+    "input": {
+      "op": "approve",
+      "mode": "timed",
+      "kind": "routine",
+      "event": "inputFailure"
+    },
+    "expected": "stopped"
+  },
+  {
+    "id": "routine-cancel",
+    "input": {
+      "op": "approve",
+      "mode": "timed",
+      "kind": "routine",
+      "event": "cancel"
+    },
+    "expected": "stopped"
+  },
+  {
+    "id": "sensitive-reject",
+    "input": {
+      "op": "approve",
+      "mode": "timed",
+      "kind": "sensitive",
+      "event": "reject"
+    },
+    "expected": "rejected"
+  },
+  {
+    "id": "destructive-reject",
+    "input": {
+      "op": "approve",
+      "mode": "timed",
+      "kind": "destructive",
+      "event": "reject"
+    },
+    "expected": "rejected"
+  },
+  {
+    "id": "routine-accept",
+    "input": {
+      "op": "approve",
+      "mode": "timed",
+      "kind": "routine",
+      "event": "accept"
+    },
+    "expected": "approved"
+  },
+  {
+    "id": "description-shared",
+    "input": {
+      "op": "description",
+      "domain": "index.example.test",
+      "environment": "shared",
+      "feature": "directory",
+      "owner": "go.attestra.aws"
+    },
+    "expected": "index.example.test SHARED | go.attestra.aws"
+  },
+  {
+    "id": "description-dev",
+    "input": {
+      "op": "description",
+      "domain": "index.example.test",
+      "environment": "dev",
+      "feature": "directory",
+      "owner": ""
+    },
+    "expected": "index.example.test DEV | directory"
+  },
+  {
+    "id": "same-id",
+    "input": {
+      "op": "merge",
+      "current": {
+        "scope": {
+          "application": "app",
+          "environment": "dev",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id1",
+            "observation": {}
+          }
+        ]
+      },
+      "cached": {
+        "scope": {
+          "application": "app",
+          "environment": "dev",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id1",
+            "observation": {
+              "status": "present",
+              "observedAt": "2026-01-01T00:00:00Z",
+              "source": "probe"
+            }
+          }
+        ]
+      }
+    },
+    "expected": {
+      "schemaVersion": 1,
+      "scope": {
+        "application": "app",
+        "environment": "dev",
+        "stack": "dev"
+      },
+      "metadata": {
+        "startedAt": "0001-01-01T00:00:00Z",
+        "finishedAt": "0001-01-01T00:00:00Z"
+      },
+      "cacheLoaded": true,
+      "artifacts": [
+        {
+          "key": "handler",
+          "provider": "aws",
+          "providerId": "id1",
+          "observation": {
+            "status": "present",
+            "source": "probe",
+            "observedAt": "2026-01-01T00:00:00Z"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "new-id",
+    "input": {
+      "op": "merge",
+      "current": {
+        "scope": {
+          "application": "app",
+          "environment": "dev",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id2",
+            "observation": {}
+          }
+        ]
+      },
+      "cached": {
+        "scope": {
+          "application": "app",
+          "environment": "dev",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id1",
+            "observation": {
+              "status": "present",
+              "observedAt": "2026-01-01T00:00:00Z",
+              "source": "probe"
+            }
+          }
+        ]
+      }
+    },
+    "expected": {
+      "schemaVersion": 1,
+      "scope": {
+        "application": "app",
+        "environment": "dev",
+        "stack": "dev"
+      },
+      "metadata": {
+        "startedAt": "0001-01-01T00:00:00Z",
+        "finishedAt": "0001-01-01T00:00:00Z"
+      },
+      "cacheLoaded": true,
+      "artifacts": [
+        {
+          "key": "handler",
+          "provider": "aws",
+          "providerId": "id2",
+          "observation": {
+            "status": "unknown",
+            "observedAt": "0001-01-01T00:00:00Z",
+            "reason": "unchecked"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "cross-scope",
+    "input": {
+      "op": "merge",
+      "current": {
+        "scope": {
+          "application": "app",
+          "environment": "qa",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id1",
+            "observation": {}
+          }
+        ]
+      },
+      "cached": {
+        "scope": {
+          "application": "app",
+          "environment": "dev",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id1",
+            "observation": {
+              "status": "present",
+              "observedAt": "2026-01-01T00:00:00Z",
+              "source": "probe"
+            }
+          }
+        ]
+      }
+    },
+    "expected": {
+      "schemaVersion": 1,
+      "scope": {
+        "application": "app",
+        "environment": "qa",
+        "stack": "dev"
+      },
+      "metadata": {
+        "startedAt": "0001-01-01T00:00:00Z",
+        "finishedAt": "0001-01-01T00:00:00Z"
+      },
+      "cacheLoaded": false,
+      "artifacts": [
+        {
+          "key": "handler",
+          "provider": "aws",
+          "providerId": "id1",
+          "observation": {
+            "status": "unknown",
+            "observedAt": "0001-01-01T00:00:00Z",
+            "reason": "unchecked"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "failed-probe",
+    "input": {
+      "op": "merge",
+      "current": {
+        "scope": {
+          "application": "app",
+          "environment": "dev",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id1",
+            "observation": {
+              "status": "unknown",
+              "reason": "check_failed",
+              "observedAt": "2026-01-02T00:00:00Z"
+            }
+          }
+        ]
+      },
+      "cached": {
+        "scope": {
+          "application": "app",
+          "environment": "dev",
+          "stack": "dev"
+        },
+        "artifacts": [
+          {
+            "key": "handler",
+            "provider": "aws",
+            "providerId": "id1",
+            "observation": {
+              "status": "present",
+              "observedAt": "2026-01-01T00:00:00Z",
+              "source": "probe"
+            }
+          }
+        ]
+      }
+    },
+    "expected": {
+      "schemaVersion": 1,
+      "scope": {
+        "application": "app",
+        "environment": "dev",
+        "stack": "dev"
+      },
+      "metadata": {
+        "startedAt": "0001-01-01T00:00:00Z",
+        "finishedAt": "0001-01-01T00:00:00Z"
+      },
+      "cacheLoaded": true,
+      "artifacts": [
+        {
+          "key": "handler",
+          "provider": "aws",
+          "providerId": "id1",
+          "observation": {
+            "status": "unknown",
+            "observedAt": "2026-01-02T00:00:00Z",
+            "reason": "check_failed"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "state-allowlist",
+    "input": {
+      "op": "state",
+      "state": {
+        "deployment": {
+          "resources": [
+            {
+              "type": "aws:lambda/function:Function",
+              "urn": "urn:pulumi:dev::example::aws:lambda/function:Function::handler",
+              "custom": true,
+              "id": "handler-123",
+              "inputs": {
+                "timeout": 15
+              },
+              "outputs": {
+                "memorySize": 256,
+                "timeout": {
+                  "secret": "fixture"
+                },
+                "environment": {
+                  "API_KEY": "fixture"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "expected": {
+      "schemaVersion": 1,
+      "scope": {},
+      "metadata": {
+        "startedAt": "0001-01-01T00:00:00Z",
+        "finishedAt": "0001-01-01T00:00:00Z"
+      },
+      "cacheLoaded": false,
+      "artifacts": [
+        {
+          "key": "urn:pulumi:dev::example::aws:lambda/function:Function::handler",
+          "name": "handler",
+          "type": "aws:lambda/function:Function",
+          "provider": "aws",
+          "providerId": "handler-123",
+          "priority": 30,
+          "observation": {
+            "status": "recorded",
+            "source": "pulumi-state",
+            "observedAt": "2026-01-01T00:00:00Z"
+          },
+          "configuration": {
+            "source": "pulumi-state",
+            "observedAt": "2026-01-01T00:00:00Z",
+            "values": {
+              "memorySize": "256"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "stronger-controls",
+    "input": {
+      "op": "selectSource",
+      "declaration": {
+        "environment": "dev",
+        "policyVersion": "v1",
+        "properties": [
+          {
+            "name": "url",
+            "type": "string",
+            "category": "application",
+            "sensitivity": "public",
+            "required": true
+          }
+        ],
+        "consumers": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "readers": [
+              "remote"
+            ]
+          }
+        ],
+        "bindings": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "auto": true,
+            "sources": [
+              {
+                "name": "first",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "scoped"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 1,
+                "costKnown": true,
+                "estimatedCost": 1
+              },
+              {
+                "name": "second",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "scoped",
+                  "encrypted"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 5,
+                "costKnown": true,
+                "estimatedCost": 9
+              }
+            ],
+            "onMissing": "error",
+            "onUnavailable": "error"
+          }
+        ]
+      }
+    },
+    "expected": "second"
+  },
+  {
+    "id": "incomparable-controls",
+    "input": {
+      "op": "selectSource",
+      "declaration": {
+        "environment": "dev",
+        "policyVersion": "v1",
+        "properties": [
+          {
+            "name": "url",
+            "type": "string",
+            "category": "application",
+            "sensitivity": "public",
+            "required": true
+          }
+        ],
+        "consumers": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "readers": [
+              "remote"
+            ]
+          }
+        ],
+        "bindings": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "auto": true,
+            "sources": [
+              {
+                "name": "first",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "scoped"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 1,
+                "costKnown": true,
+                "estimatedCost": 1
+              },
+              {
+                "name": "second",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "encrypted"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 1,
+                "costKnown": true,
+                "estimatedCost": 1
+              }
+            ],
+            "onMissing": "error",
+            "onUnavailable": "error"
+          }
+        ]
+      }
+    },
+    "expected": "ambiguous_source"
+  },
+  {
+    "id": "rank-first",
+    "input": {
+      "op": "selectSource",
+      "declaration": {
+        "environment": "dev",
+        "policyVersion": "v1",
+        "properties": [
+          {
+            "name": "url",
+            "type": "string",
+            "category": "application",
+            "sensitivity": "public",
+            "required": true
+          }
+        ],
+        "consumers": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "readers": [
+              "remote"
+            ]
+          }
+        ],
+        "bindings": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "auto": true,
+            "sources": [
+              {
+                "name": "first",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "scoped"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 1,
+                "costKnown": true,
+                "estimatedCost": 1
+              },
+              {
+                "name": "second",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "scoped"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 0,
+                "costKnown": true,
+                "estimatedCost": 9
+              }
+            ],
+            "onMissing": "error",
+            "onUnavailable": "error"
+          }
+        ]
+      }
+    },
+    "expected": "second"
+  },
+  {
+    "id": "tie",
+    "input": {
+      "op": "selectSource",
+      "declaration": {
+        "environment": "dev",
+        "policyVersion": "v1",
+        "properties": [
+          {
+            "name": "url",
+            "type": "string",
+            "category": "application",
+            "sensitivity": "public",
+            "required": true
+          }
+        ],
+        "consumers": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "readers": [
+              "remote"
+            ]
+          }
+        ],
+        "bindings": [
+          {
+            "artifact": "handler",
+            "property": "url",
+            "auto": true,
+            "sources": [
+              {
+                "name": "first",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "scoped"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 1,
+                "costKnown": true,
+                "estimatedCost": 1
+              },
+              {
+                "name": "second",
+                "storage": "secret-store",
+                "reader": "remote",
+                "location": "config",
+                "key": "url",
+                "scope": "dev",
+                "readerIdentity": "handler-role",
+                "writerIdentity": "worker",
+                "updateMethod": "versioned-write",
+                "controls": [
+                  "scoped"
+                ],
+                "maxStalenessSeconds": 30,
+                "providerRank": 1,
+                "costKnown": true,
+                "estimatedCost": 1
+              }
+            ],
+            "onMissing": "error",
+            "onUnavailable": "error"
+          }
+        ]
+      }
+    },
+    "expected": "ambiguous_source"
+  }
+]
